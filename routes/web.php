@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CoinMapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
+    
+    Route::get('/dashboard', function() {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('/coin-map', [ CoinMapController::class, 'getCoinATM' ])->name('coin.map');
+
+    Route::get('/payment', [ CoinMapController::class, 'payment' ])->name('payment');
+    
+});
