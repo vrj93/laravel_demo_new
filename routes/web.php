@@ -26,6 +26,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::get('/coin-map', [ CoinMapController::class, 'getCoinATM' ])->name('coin.map');
 
+    Route::get('/payment-page', [ CoinMapController::class, 'paymentPage' ])->name('payment.page');
+
     Route::get('/payment', [ CoinMapController::class, 'payment' ])->name('payment');
     
 });

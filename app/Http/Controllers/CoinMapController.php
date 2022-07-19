@@ -37,12 +37,15 @@ class CoinMapController extends Controller
 
     }
 
+    public function paymentPage() {
+        return view('payment.payment');
+    }
+
     public function payment() {
         $data = [
-            'name' => 'Vivek Joshi',
             'currency' => 'INR',
-            'Amount' => 5000,
-            'Method' => 'Credit Card',
+            'amount' => 5000,
+            'method' => 'Credit Card',
             'receipt' => 'Billing',
         ];
 
@@ -52,8 +55,8 @@ class CoinMapController extends Controller
         curl_setopt($ch, CURLOPT_USERPWD, config('payment.razor_pay_id').':'.config('payment.razor_pay_secret'));
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_POST, false);
 
         $result = curl_exec($ch);
         
@@ -62,6 +65,7 @@ class CoinMapController extends Controller
         } else {
             return $result;
         }
+
         curl_close($ch);
     }
 }
