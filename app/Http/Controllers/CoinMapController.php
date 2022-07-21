@@ -8,6 +8,11 @@ use Illuminate\Http\JsonResponse;
 
 class CoinMapController extends Controller
 {
+
+    public function index() {
+        return 'Ok';
+    }
+
     public function getCoinATM(): JsonResponse 
     {
         
