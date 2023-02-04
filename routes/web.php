@@ -24,12 +24,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/index', [ CoinMapController::class, 'index' ])->name('index');
+    Route::get('/pdf-generate', [ CoinMapController::class, 'index' ])->name('pdf.generate');
 
     Route::get('/coin-map', [ CoinMapController::class, 'getCoinATM' ])->name('coin.map');
 
     Route::get('/payment-page', [ CoinMapController::class, 'paymentPage' ])->name('payment.page');
 
-    Route::get('/payment', [ CoinMapController::class, 'payment' ])->name('payment');
+    Route::post('/payment', [ CoinMapController::class, 'payment' ])->name('payment');
     
 });

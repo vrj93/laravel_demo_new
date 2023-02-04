@@ -4,13 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\PrettyJsonResponse;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\JsonResponse;
 
 class CoinMapController extends Controller
 {
 
     public function index() {
-        return 'Ok';
+        $users = User::all();
+
+        $data = [
+            'title' => 'Welcome to PDF Generator',
+            'date' => date('d-M-Y'),
+            'users' => $users
+        ];
+
+        $pdf = FacadePdf::loadView('pdf.myPDF', $data);
+
+        return $pdf->download('users.pdf');
     }
 
     public function getCoinATM(): JsonResponse 
@@ -46,12 +58,10 @@ class CoinMapController extends Controller
         return view('payment.payment');
     }
 
-    public function payment() {
+    public function payment(Request $request) {
         $data = [
+            'amount' => $request->amount,
             'currency' => 'INR',
-            'amount' => 5000,
-            'method' => 'Credit Card',
-            'receipt' => 'Billing',
         ];
 
         $ch = curl_init();
@@ -61,7 +71,7 @@ class CoinMapController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_POST, false);
+        curl_setopt($ch, CURLOPT_POST, true);
 
         $result = curl_exec($ch);
         
